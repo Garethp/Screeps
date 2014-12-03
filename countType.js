@@ -18,6 +18,12 @@ module.exports = function(type, qued)
 
 	if(qued)
 	{
+		if(Game.spawns.Spawn1.spawning !== null
+			&& Game.spawns.Spawn1.spawning !== undefined
+			&& Memory.creeps[Game.spawns.Spawn1.spawning.name].role == type) {
+			count++;
+		}
+
 		count += Memory.spawnQue.filter(function(qued)
 		{
 			return qued == type;
