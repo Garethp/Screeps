@@ -1,14 +1,42 @@
-/**
- * This is where we spawn all of our creeps. Eventually, we'll make it support more than one spawner
- * @type {{spawn: spawn, canSpawn: canSpawn, spawnCost: spawnCost}}
- */
 module.exports =
 {
-	/**
-	 * Spawn a creep by a role if we have enough energy
-	 * @param role
-	 */
-	spawn: function(role)
+	initSpawnQue: function()
+	{
+		if(Memory.spawnQue == undefined)
+			Memory.spawnQue = [ ];
+	},
+
+	addToQue: function(creep, unshift)
+	{
+		this.initSpawnQue();
+
+		if(unshift != undefined && unshift === true)
+			Memory.spawnQue.unshift(creep);
+		else
+			Memory.spawnQue.push(creep);
+	},
+
+	spawnNextInQue: function()
+	{
+		this.initSpawnQue();
+
+		if(Game.spawns.Spawn1.spawning == null && Memory.spawnQue.length > 0)
+		{
+			var spawn = Memory.spawnQue[0];
+			if(typeof spawn == "string")
+			{
+				spawn = { type: spawn, memory: { } };
+			}
+
+			if(this.canSpawn(spawn.type))
+			{
+				this.spawn(spawn.type, spawn.memory);
+				Memory.spawnQue.shift();
+			}
+		}
+	},
+
+	spawn: function(role, memory)
 	{
 		var roles = require('roles')();
 
@@ -24,6 +52,11 @@ module.exports =
 			return;
 		}
 
+		if(memory == undefined)
+			memory = { };
+
+		memory['role'] = role;
+
 		var nameCount = 0;
 		var name = null;
 		while(name == null)
@@ -34,16 +67,9 @@ module.exports =
 				name = tryName;
 		}
 
-		Game.spawns.Spawn1.createCreep(roles[role], name, { role: role });
+		Game.spawns.Spawn1.createCreep(roles[role], name, memory);
 	},
 
-	/**
-	 * Check if we have the energy to spawn a role
-	 *
-	 * @param spawnPoint
-	 * @param role
-	 * @returns {boolean}
-	 */
 	canSpawn: function(spawnPoint, role)
 	{
 		if(typeof spawnPoint == "string" && role == undefined)
@@ -55,12 +81,6 @@ module.exports =
 		return spawnPoint.energy >= this.spawnCost(role);
 	},
 
-	/**
-	 * Calculate the cost for spawning a role
-	 *
-	 * @param role
-	 * @returns {number}
-	 */
 	spawnCost: function(role)
 	{
 		var role = require('roles')()[role];
@@ -102,5 +122,11 @@ module.exports =
 		}
 
 		return total;
+	},
+
+	killAll: function()
+	{
+		for(var i in Game.creeps)
+			Game.creeps[i].suicide();
 	}
 }

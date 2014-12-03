@@ -33,26 +33,28 @@ module.exports = function(creep)
 	}
 	else
 	{
-		var miner = creep.room.find(Game.MY_CREEPS, {
-			filter: function(miner)
-			{
-				if(miner.id == creep.memory.miner)
-					return true;
+		var miner = Game.getObjectById(creep.memory.miner);
 
-				return false;
-			}
-		});
+		if(miner == null)
+		{
+			creep.suicide();
+			return;
+		}
 	}
 
 	//If we have too much energy, go drop it off. Otherwise, move to assigned miner and pick up any dropped energy
 	if(creep.energy < creep.energyCapacity) {
-		creep.moveTo(miner[0]);
 
-		if(creep.pos.isNearTo(miner[0]))
+
+		if(creep.pos.isNearTo(miner))
 		{
 			var energy = creep.pos.findInRange(Game.DROPPED_ENERGY, 1)[0];
+			creep.pickup(energy);
 		}
-		creep.pickup(energy);
+		else
+		{
+			creep.moveTo(miner);
+		}
 	}
 	else {
 		var target = creep.pos.findNearest(Game.MY_SPAWNS);

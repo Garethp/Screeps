@@ -43,17 +43,18 @@ module.exports = function(creep)
 		if(toRepair.length)
 		{
 			var structure = toRepair[0];
-			creep.moveTo(structure, { withinRampartsOnly: true });
+			creep.moveTo(structure);
 			creep.repair(structure);
 
 			return;
 		}
 
 		//If no repairs are needed, we're just going to go find some structures to build
-		var targets = creep.room.find(Game.CONSTRUCTION_SITES);
-		if(targets.length) {
-			creep.moveTo(targets[0], { withinRampartsOnly: true });
-			creep.build(targets[0]);
+		var targets = creep.pos.findNearest(Game.CONSTRUCTION_SITES);
+		if(targets !== undefined) {
+
+			creep.moveTo(targets);
+			creep.build(targets);
 			return;
 		}
 

@@ -54,9 +54,18 @@ var clientSide = function() {
 			if (el.innerHTML === lastMessage) {
 				found = true;
 			} else if (found) {
-				var ts = el.getElementsByClassName('timestamp')[0].firstChild.nodeValue;
-				var msg = el.getElementsByTagName('span')[0].firstChild.nodeValue;
-				messages.push([ts, msg]);
+				var ts = el.getElementsByClassName('timestamp')[0];
+				ts = ts && ts.firstChild.nodeValue;
+				var msg = el.getElementsByTagName('span')[0].childNodes;
+				var txt = '';
+				for (var jj = 0; jj < msg.length; ++jj) {
+					if (msg[jj].tagName === 'BR') {
+						txt += '\n';
+					} else {
+						txt += msg[jj].nodeValue;
+					}
+				}
+				messages.push([ts, txt]);
 			}
 		}
 		if (messages.length) {

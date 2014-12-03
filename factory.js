@@ -1,41 +1,58 @@
 var countType = require('countType');
-var spawner = require('spawner');
 
-module.exports = function()
-{
-	if(Memory.sources == undefined)
-		Memory.sources = { };
-
-	//These creeps will be generated in this order, and if one of them dies or expires, they'll be rebuilt
-	var requiredScreeps = [
-		'miner',
-		'miner_helper',
-		'miner_helper',
-		'miner',
-		'miner_helper',
-		'miner_helper',
-	]
-
-	var gatheredScreeps = { };
-	for(var index in requiredScreeps)
+module.exports ={
+	init: function()
 	{
-		var type = requiredScreeps[index];
-		if(Game.spawns.Spawn1.spawning != undefined)
+		if(Memory.factoryInit != undefined)
+			return;
+
+		Memory.factoryInit = true;
+		this.memory();
+	},
+
+	run: function()
+	{
+		this.spawnRequiredScreeps();
+	},
+
+	memory: function() {
+		if(Memory.spawnQue == undefined)
+			Memory.spawnQue = [ ];
+
+		if(Memory.sources == undefined)
+			Memory.sources = { };
+
+		if(Memory.requiredScreeps == undefined)
 		{
-			break;
+			Memory.requiredScreeps = [
+				'miner',
+				'miner',
+				'miner',
+				'miner',
+				'miner'
+			];
 		}
+	},
 
-		if(gatheredScreeps[type] == undefined)
-			gatheredScreeps[type] = 0;
+	spawnRequiredScreeps: function()
+	{
+		var requiredScreeps = Memory.requiredScreeps;
 
-		var neededToSkip = gatheredScreeps[type] + 1;
-
-		if(neededToSkip > countType(type))
+		var gatheredScreeps = { };
+		for(var index in requiredScreeps)
 		{
-			spawner.spawn(type);
-			break;
-		}
+			var type = requiredScreeps[index];
+			if(gatheredScreeps[type] == undefined)
+				gatheredScreeps[type] = 0;
 
-		gatheredScreeps[type]++;
+			var neededToSkip = gatheredScreeps[type] + 1;
+
+			if(neededToSkip > countType(type, true))
+			{
+				Memory.spawnQue.push(type);
+			}
+
+			gatheredScreeps[type]++;
+		}
 	}
-}
+};

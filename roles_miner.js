@@ -13,15 +13,34 @@ module.exports = function(creep)
 			if(Memory.sources[source.id] == undefined || Memory.sources[source.id].miner == undefined || Memory.sources[source.id].miner == creep.id)
 				return true
 
+			if(Game.getObjectById(Memory.sources[source.id].miner) == null)
+				return true;
+
 			return false;
 		}
 	});
 
+	if(source == undefined)
+		return;
+
+	if(creep.memory.onCreated == undefined)
+	{
+		var steps = Game.spawns.Spawn1.pos.findPathTo(source).length * 2;
+		var creepsNeeded = Math.round((steps * 6) / 50);
+
+		for(var i = 0; i < creepsNeeded; i++)
+			Memory.spawnQue.unshift({ type: 'miner_helper', memory: {
+				miner: creep.id
+			}});
+
+		creep.memory.helpersNeeded = creepsNeeded;
+		creep.memory.onCreated = true;
+	}
+
 	if(Memory.sources[source.id] == undefined)
 		Memory.sources[source.id] = { id: source.id };
 
-	if(Memory.sources[source.id].miner == undefined)
-		Memory.sources[source.id].miner = creep.id;
+	Memory.sources[source.id].miner = creep.id;
 
 	creep.moveTo(source);
 	creep.harvest(source);

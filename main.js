@@ -3,6 +3,9 @@ var spawner = require('spawner');
 var countType = require('countType');
 var factory = require('factory');
 
-factory();
+factory.init();
+factory.run();
+
+spawner.spawnNextInQue();
 
 performRoles(Game.creeps);
