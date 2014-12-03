@@ -10,6 +10,10 @@ var miner = function()
 };
 
 miner.prototype = Object.create(proto.prototype);
+miner.parts = [
+	[Game.MOVE, Game.WORK, Game.WORK, Game.WORK],
+	[Game.MOVE, Game.WORK, Game.WORK, Game.WORK, Game.WORK, Game.WORK]
+];
 miner.prototype.onSpawn = function()
 {
 	var creep = this.creep;

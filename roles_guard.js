@@ -11,7 +11,8 @@ var guard = function()
 };
 
 guard.prototype = Object.create(proto.prototype);
-guard.performAction = function(creep)
+guard.parts = [Game.TOUGH, Game.MOVE, Game.ATTACK,Game.ATTACK];
+guard.prototype.performAction = function(creep)
 {
 	var targets = creep.room.find(Game.HOSTILE_CREEPS);
 	if(targets.length) {

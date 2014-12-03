@@ -5,8 +5,9 @@ var archer = function()
 
 };
 
+archer.parts = [Game.MOVE, Game.RANGED_ATTACK, Game.RANGED_ATTACK];
 archer.prototype = Object.create(proto.prototype);
-archer.performAction = function()
+archer.prototype.performAction = function()
 {
 	var creep = this.creep;
 

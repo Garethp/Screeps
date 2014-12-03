@@ -14,6 +14,10 @@ var helper = function()
 };
 
 helper.prototype = Object.create(proto.prototype);
+helper.parts = [
+	[Game.MOVE, Game.MOVE, Game.CARRY],
+	[Game.MOVE, Game.MOVE, Game.CARRY, Game.MOVE, Game.MOVE, Game.CARRY]
+];
 helper.prototype.performAction = function()
 {
 	var creep = this.creep;
@@ -54,8 +58,6 @@ helper.prototype.performAction = function()
 
 	//If we have too much energy, go drop it off. Otherwise, move to assigned miner and pick up any dropped energy
 	if(creep.energy < creep.energyCapacity) {
-
-
 		if(creep.pos.isNearTo(miner))
 		{
 			var energy = creep.pos.findInRange(Game.DROPPED_ENERGY, 1)[0];
@@ -68,9 +70,26 @@ helper.prototype.performAction = function()
 	}
 	else {
 		var target = creep.pos.findNearest(Game.MY_SPAWNS);
+		if(target !== null && target.energy / target.energyCapacity >= .75)
+		{
+			var extension = creep.pos.findNearest(Game.MY_STRUCTURES, {
+				filter: function(structure)
+				{
+					return (structure.structureType == Game.STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity);
+				}
+			});
+			if(extension != undefined)
+				target = extension;
+		}
 
 		creep.moveTo(target);
-		creep.transferEnergy(target);
+
+		if(creep.pos.isNearTo(target)) {
+			if(target.energy < target.energyCapacity)
+				creep.transferEnergy(target);
+			else
+				creep.dropEnergy();
+		}
 	}
 };
 

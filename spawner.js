@@ -38,9 +38,9 @@ module.exports =
 
 	spawn: function(role, memory)
 	{
-		var roles = require('roles')();
+		var manager = require('roleManager');
 
-		if(roles[role] == undefined)
+		if(!manager.roleExists(role))
 		{
 			console.log(role + ' is not a valid role');
 			console.log(roles[role]);
@@ -67,7 +67,7 @@ module.exports =
 				name = tryName;
 		}
 
-		Game.spawns.Spawn1.createCreep(roles[role], name, memory);
+		Game.spawns.Spawn1.createCreep(manager.getRoleBodyParts(role), name, memory);
 	},
 
 	canSpawn: function(spawnPoint, role)
@@ -83,7 +83,8 @@ module.exports =
 
 	spawnCost: function(role)
 	{
-		var role = require('roles')()[role];
+		var manager = require('roleManager');
+		var parts = manager.getRoleBodyParts(role);
 
 		var total = 0;
 		for(var index in role)

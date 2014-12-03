@@ -39,6 +39,33 @@ proto.prototype.onSpawn = function()
 {
 };
 
+proto.prototype.getParts = function()
+{
+	var _ = require('lodash');
+
+	var extensions = Game.getRoom('1-1').find(Game.MY_STRUCTURES, {
+		filter: function(structure)
+		{
+			return (structure.structureType == Game.STRUCTURE_EXTENSION && structure.energy >= 200);
+		}
+	}).length;
+
+	var parts = _.cloneDeep(this.parts);
+	if(typeof parts[0] != "object")
+		return this.parts;
+
+	parts.reverse();
+
+	for(var i in parts)
+	{
+		if((parts[i].length - 5) <= extensions) {
+			return parts[i];
+		}
+	}
+
+	console.log('Not Found');
+};
+
 proto.prototype.performAction = function()
 {
 

@@ -6,7 +6,11 @@ var builder = function()
 };
 
 builder.prototype = Object.create(proto.prototype);
-builder.performAction = function(creep)
+builder.parts = [
+	[Game.WORK,Game.WORK,Game.CARRY,Game.CARRY,Game.MOVE],
+	[Game.WORK,Game.WORK,Game.CARRY,Game.CARRY,Game.MOVE, Game.MOVE, Game.CARRY]
+];
+builder.prototype.performAction = function(creep)
 {
 	//If out of energy, go to spawn and recharge
 	if(creep.energy == 0) {

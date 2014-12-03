@@ -10,7 +10,8 @@ var harvester = function()
 };
 
 harvester.prototype = Object.create(proto.prototype);
-harvester.performAction = function (creep) {
+harvester.parts = [Game.MOVE, Game.MOVE, Game.CARRY, Game.WORK];
+harvester.prototype.performAction = function (creep) {
 	if(creep.energy < creep.energyCapacity) {
 		var sources = creep.pos.findNearest(Game.SOURCES);
 		creep.moveTo(sources);
