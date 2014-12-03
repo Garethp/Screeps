@@ -26,10 +26,11 @@ module.exports ={
 		{
 			Memory.requiredScreeps = [
 				'miner',
-				'miner',
-				'miner',
-				'miner',
-				'miner'
+				'archer',
+				'archer',
+				'archer',
+				'builder',
+				'archer'
 			];
 		}
 	},
