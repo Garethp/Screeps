@@ -2,16 +2,23 @@
  * This guy just finds a source, and stays near it. His job is just to mine away and let the energy fall on the ground
  * @param creep
  */
-module.exports = function(creep)
+var proto = require('role_prototype');
+
+var miner = function()
 {
-	//Basically, each miner can empty a whole source by themselves. Also, since they're slow, we don't have them
-	//moving away from the source when it's empty, it'd regenerate before they got to another one.
-	//For this, we assign one miner to one source, and they stay with it
+
+};
+
+miner.prototype = Object.create(proto.prototype);
+miner.prototype.onSpawn = function()
+{
+	var creep = this.creep;
+
 	var source = creep.pos.findNearest(Game.SOURCES, {
 		filter: function(source)
 		{
 			if(Memory.sources[source.id] == undefined || Memory.sources[source.id].miner == undefined || Memory.sources[source.id].miner == creep.id)
-				return true
+				return true;
 
 			if(Game.getObjectById(Memory.sources[source.id].miner) == null)
 				return true;
@@ -23,19 +30,35 @@ module.exports = function(creep)
 	if(source == undefined)
 		return;
 
-	if(creep.memory.onCreated == undefined)
-	{
-		var steps = Game.spawns.Spawn1.pos.findPathTo(source).length * 2;
-		var creepsNeeded = Math.round((steps * 6) / 50);
+	if(Memory.sources[source.id] == undefined)
+		Memory.sources[source.id] = { id: source.id };
 
-		for(var i = 0; i < creepsNeeded; i++)
-			Memory.spawnQue.unshift({ type: 'miner_helper', memory: {
-				miner: creep.id
-			}});
+	Memory.sources[source.id].miner = creep.id;
+	creep.memory.source = source.id;
 
-		creep.memory.helpersNeeded = creepsNeeded;
-		creep.memory.onCreated = true;
-	}
+	var steps = Game.spawns.Spawn1.pos.findPathTo(source).length * 2;
+	var creepsNeeded = Math.round((steps * 6) / 50);
+
+	for(var i = 0; i < creepsNeeded; i++)
+		Memory.spawnQue.unshift({ type: 'miner_helper', memory: {
+			miner: creep.id
+		}});
+
+	creep.memory.helpersNeeded = creepsNeeded;
+	creep.memory.onCreated = true;
+};
+
+miner.prototype.performAction = function()
+{
+	var creep = this.creep;
+
+	//Basically, each miner can empty a whole source by themselves. Also, since they're slow, we don't have them
+	//moving away from the source when it's empty, it'd regenerate before they got to another one.
+	//For this, we assign one miner to one source, and they stay with it
+	var source = Game.getObjectById(creep.memory.source);
+
+	if(source == null)
+		return;
 
 	if(Memory.sources[source.id] == undefined)
 		Memory.sources[source.id] = { id: source.id };
@@ -45,3 +68,5 @@ module.exports = function(creep)
 	creep.moveTo(source);
 	creep.harvest(source);
 };
+
+module.exports = miner;

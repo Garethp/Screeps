@@ -14,6 +14,8 @@ module.exports = function(creeps)
 		if(roles[role] == undefined)
 			roles[role] = require("roles_" + role);
 
-		roles[role](creep);
+		var roles = new roles[role];
+		roles.init(creep);
+		roles.run();
 	}
-}
+};

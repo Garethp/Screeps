@@ -6,8 +6,18 @@
  *
  * @param creep
  */
-module.exports = function(creep)
+var proto = require('role_prototype');
+
+var helper = function()
 {
+
+};
+
+helper.prototype = Object.create(proto.prototype);
+helper.prototype.performAction = function()
+{
+	var creep = this.creep;
+
 	//If this helper isn't assigned to a miner, find one and assign him to it. If it is assigned to a miner,
 	//then find that miner by his id
 	if(creep.memory.miner == undefined)
@@ -63,3 +73,5 @@ module.exports = function(creep)
 		creep.transferEnergy(target);
 	}
 };
+
+module.exports = helper;

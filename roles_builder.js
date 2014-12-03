@@ -1,4 +1,12 @@
-module.exports = function(creep)
+var proto = require('role_prototype');
+
+var builder = function()
+{
+
+};
+
+builder.prototype = Object.create(proto.prototype);
+builder.performAction = function(creep)
 {
 	//If out of energy, go to spawn and recharge
 	if(creep.energy == 0) {
@@ -62,3 +70,5 @@ module.exports = function(creep)
 		creep.moveTo(Game.spawns.Spawn1, { withinRampartsOnly: true });
 	}
 };
+
+module.exports = builder;

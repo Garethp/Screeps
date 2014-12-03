@@ -3,7 +3,15 @@
  * This could be used to get energy from the battle field, if given some AI for running away
  * @param creep
  */
-module.exports = function (creep) {
+var proto = require('role_prototype');
+
+var scavenger = function()
+{
+
+};
+
+scavenger.prototype = Object.create(proto.prototype);
+scavenger.performAction = function (creep) {
 	if(creep.energy < creep.energyCapacity) {
 		var sources = creep.pos.findNearest(Game.DROPPED_ENERGY);
 		creep.moveTo(sources);
@@ -16,3 +24,5 @@ module.exports = function (creep) {
 		creep.transferEnergy(target);
 	}
 };
+
+module.exports = scavenger;

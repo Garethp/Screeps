@@ -2,7 +2,15 @@
  * Because shit happens
  * @param creep
  */
-module.exports = function(creep)
+var proto = require('role_prototype');
+
+var healer = function()
+{
+
+};
+
+healer.prototype = Object.create(proto.prototype);
+healer.performAction = function(creep)
 {
 	var needsHealing = [ ];
 
@@ -42,4 +50,6 @@ module.exports = function(creep)
 		else
 			creep.moveTo(Game.spawns.Spawn1);
 	}
-}
+};
+
+module.exports = healer;

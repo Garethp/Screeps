@@ -3,7 +3,15 @@
  * work on this one later
  * @param creep
  */
-module.exports = function(creep)
+var proto = require('role_prototype');
+
+var guard = function()
+{
+
+};
+
+guard.prototype = Object.create(proto.prototype);
+guard.performAction = function(creep)
 {
 	var targets = creep.room.find(Game.HOSTILE_CREEPS);
 	if(targets.length) {
@@ -15,3 +23,5 @@ module.exports = function(creep)
 		creep.moveTo(Game.spawns.Spawn1);
 	}
 }
+
+module.exports = guard;

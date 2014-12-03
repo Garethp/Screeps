@@ -11,4 +11,4 @@ module.exports = function()
 		'miner': [Game.MOVE, Game.WORK, Game.WORK, Game.WORK],
 		'miner_helper': [Game.MOVE, Game.MOVE, Game.CARRY]
 	};
-}
+};

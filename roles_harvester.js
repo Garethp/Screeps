@@ -2,7 +2,15 @@
  * These are simple creatures, they just find an active source and harvest it
  * @param creep
  */
-module.exports = function (creep) {
+var proto = require('role_prototype');
+
+var harvester = function()
+{
+
+};
+
+harvester.prototype = Object.create(proto.prototype);
+harvester.performAction = function (creep) {
 	if(creep.energy < creep.energyCapacity) {
 		var sources = creep.pos.findNearest(Game.SOURCES);
 		creep.moveTo(sources);
@@ -14,4 +22,6 @@ module.exports = function (creep) {
 		creep.moveTo(target);
 		creep.transferEnergy(target);
 	}
-}
+};
+
+module.exports = harvester;
