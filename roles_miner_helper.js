@@ -95,7 +95,7 @@ helper.prototype.performAction = function()
 			{
 				return (
 					possibleTarget.memory.role == creep.memory.role
-					&& possibleTarget.memory.miner == creep.memory.miner
+//					&& possibleTarget.memory.miner == creep.memory.miner
 					&& possibleTarget.energy == 0
 					&& creep.pos.inRangeTo(possibleTarget, 2)
 					&& creep.pos.getDirectionTo(possibleTarget) == targetDirection
