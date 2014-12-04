@@ -30,7 +30,6 @@ module.exports =
 
 			if(this.canSpawn(spawn.type))
 			{
-				console.log(Game.spawns.Spawn1.spawning);
 				this.spawn(spawn.type, spawn.memory);
 				Memory.spawnQue.shift();
 			}
@@ -43,8 +42,6 @@ module.exports =
 
 		if(!manager.roleExists(role))
 		{
-			console.log(role + ' is not a valid role');
-			console.log(roles[role]);
 			return;
 		}
 

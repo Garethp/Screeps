@@ -15,8 +15,9 @@ var helper = function()
 
 helper.prototype = Object.create(proto.prototype);
 helper.parts = [
-	[Game.MOVE, Game.MOVE, Game.CARRY],
-	[Game.MOVE, Game.MOVE, Game.CARRY, Game.MOVE, Game.MOVE, Game.CARRY]
+	[Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY],
+	[Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY],
+	[Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY]
 ];
 helper.prototype.performAction = function()
 {
@@ -77,7 +78,8 @@ helper.prototype.performAction = function()
 				filter: function(structure)
 				{
 					return (structure.structureType == Game.STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity);
-				}
+				},
+				ignoreCreeps: true
 			});
 			if(extension != undefined)
 				target = extension;
@@ -96,8 +98,8 @@ helper.prototype.performAction = function()
 				return (
 					possibleTarget.memory.role == creep.memory.role
 //					&& possibleTarget.memory.miner == creep.memory.miner
-					&& possibleTarget.energy == 0
-					&& creep.pos.inRangeTo(possibleTarget, 2)
+					&& possibleTarget.energy < possibleTarget.energyCapacity
+					&& creep.pos.inRangeTo(possibleTarget, 1)
 					&& creep.pos.getDirectionTo(possibleTarget) == targetDirection
 				);
 			}
@@ -107,9 +109,23 @@ helper.prototype.performAction = function()
 			target = courier;
 		}
 
-		creep.moveTo(target);
+		if(target.energy == target.energyCapacity)
+		{
+			var builder = creep.pos.findNearest(Game.MY_CREEPS, {
+				filter: function(targetCreep)
+				{
+					return targetCreep.memory.role == 'builder'
+					&& targetCreep.energy < targetCreep.energyCapacity;
+				}
+			});
 
+			if(builder != null)
+				target = builder;
+		}
 
+		var targetDirection = creep.pos.findPathTo(target, { ignoreCreeps: true })[0].direction;
+
+		creep.move(targetDirection);
 
 		if(creep.pos.isNearTo(target)) {
 			if(target.energy < target.energyCapacity)

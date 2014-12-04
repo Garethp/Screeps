@@ -62,8 +62,6 @@ proto.prototype.getParts = function()
 			return parts[i];
 		}
 	}
-
-	console.log('Not Found');
 };
 
 proto.prototype.performAction = function()
@@ -115,6 +113,13 @@ proto.prototype.fightMethods = {
 		return null;
 	},
 
+	keepAwayFromEnemies: function(creep)
+	{
+		var target = creep.pos.findNearest(Game.HOSTILE_CREEPS);
+		if(target !== null && target.pos.inRangeTo(creep.pos, 3))
+			creep.moveTo(creep.pos.x + creep.pos.x - target.pos.x, creep.pos.y + creep.pos.y - target.pos.y );
+	},
+
 	kite: function(creep, target) {
 		if (target.pos.inRangeTo(creep.pos, 2)) {
 			creep.moveTo(creep.pos.x + creep.pos.x - target.pos.x, creep.pos.y + creep.pos.y - target.pos.y );
@@ -123,6 +128,43 @@ proto.prototype.fightMethods = {
 			return true;
 		}
 		return false;
+	},
+
+	targetEnemy: function(creep)
+	{
+		var nearestArcher = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
+			filter: function(enemy)
+			{
+				return enemy.getActiveBodyparts(Game.RANGED_ATTACK) > 0;
+			}
+		});
+
+		if(nearestArcher != null)
+			return nearestArcher;
+
+		var nearestMobileMelee = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
+			filter: function(enemy)
+			{
+				return enemy.getActiveBodyparts(Game.ATTACK) > 0
+					&& enemy.getActiveBodyparts(Game.MOVE) > 0;
+			}
+		});
+
+		if(nearestMobileMelee != null)
+			return nearestMobileMelee;
+
+		var nearestHealer = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
+			filter: function(enemy)
+			{
+				return enemy.getActiveBodyparts(Game.HEAL) > 0
+					&& enemy.getActiveBodyparts(Game.MOVE) > 0;
+			}
+		});
+
+		if(nearestHealer != null)
+			return nearestHealer;
+
+		return creep.pos.findNearest(Game.HOSTILE_CREEPS);
 	}
 };
 

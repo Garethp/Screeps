@@ -5,7 +5,7 @@ var archer = function()
 
 };
 
-archer.parts = [Game.MOVE, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.MOVE];
+archer.parts = [Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.MOVE, Game.MOVE];
 archer.prototype = Object.create(proto.prototype);
 archer.prototype.performAction = function()
 {
