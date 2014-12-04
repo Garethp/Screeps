@@ -86,4 +86,44 @@ proto.prototype.beforeAge = function()
 
 };
 
+/**
+ * All credit goes to Djinni
+ * @url https://bitbucket.org/Djinni/screeps/
+ */
+proto.prototype.fightMethods = {
+	rest: function(creep) {
+		var distance = 4;
+		if (creep.getActiveBodyparts(Game.HEAL)) {
+			distance = distance - 2
+		}
+		else if (creep.getActiveBodyparts(Game.RANGED_ATTACK)) {
+			distance = distance - 1;
+		}
+		if (creep.pos.findPathTo(Game.spawns.Spawn1).length > distance) {
+			creep.moveTo(Game.spawns.Spawn1);
+		}
+	},
+
+	rangedAttack: function(creep) {
+		var target = creep.pos.findNearest(Game.HOSTILE_CREEPS)
+		if(target) {
+			if (target.pos.inRangeTo(creep.pos, 3) ) {
+				creep.rangedAttack(target);
+				return target;
+			}
+		}
+		return null;
+	},
+
+	kite: function(creep, target) {
+		if (target.pos.inRangeTo(creep.pos, 2)) {
+			creep.moveTo(creep.pos.x + creep.pos.x - target.pos.x, creep.pos.y + creep.pos.y - target.pos.y );
+			return true;
+		} else if (target.pos.inRangeTo(creep.pos, 3)) {
+			return true;
+		}
+		return false;
+	}
+};
+
 module.exports = proto;

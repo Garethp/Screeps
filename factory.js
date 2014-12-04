@@ -28,8 +28,11 @@ module.exports ={
 				'miner',
 				'archer',
 				'archer',
+				'healer',
 				'archer',
+				'healer',
 				'builder',
+				'archer',
 				'archer'
 			];
 		}
@@ -48,6 +51,7 @@ module.exports ={
 
 			var neededToSkip = gatheredScreeps[type] + 1;
 
+			var found = countType(type, true);
 			if(neededToSkip > countType(type, true))
 			{
 				Memory.spawnQue.push(type);

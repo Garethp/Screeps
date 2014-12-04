@@ -5,22 +5,26 @@ var archer = function()
 
 };
 
-archer.parts = [Game.MOVE, Game.RANGED_ATTACK, Game.RANGED_ATTACK];
+archer.parts = [Game.MOVE, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.MOVE];
 archer.prototype = Object.create(proto.prototype);
 archer.prototype.performAction = function()
 {
 	var creep = this.creep;
 
-	var closestEnemy = creep.pos.findNearest(Game.HOSTILE_CREEPS);
+	var target = this.fightMethods.rangedAttack(creep);
 
-	if(closestEnemy !== undefined)
+	//If there's not a target near by, let's go search for a target if need be
+	if(target === null)
 	{
-		creep.moveTo(closestEnemy, {
-			withinRampartsOnly: true
-		});
+		target = creep.pos.findNearest(Game.HOSTILE_CREEPS);
+		if (target)
+		{
+			creep.moveTo(target);
+			return;
+		}
+	} else if (this.fightMethods.kite(creep, target)) return;
 
-		creep.rangedAttack(closestEnemy);
-	}
+	this.fightMethods.rest(creep);
 };
 
 module.exports = archer;

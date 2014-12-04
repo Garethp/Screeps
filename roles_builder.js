@@ -70,6 +70,12 @@ builder.prototype.performAction = function(creep)
 			return;
 		}
 
+		var target = this.fightMethods.rangedAttack(creep);
+		if(target)
+		{
+			this.fightMethods.kite(creep, target);
+		}
+
 		//If we have nothing to do, let's just go and regroup at the spawn point
 		creep.moveTo(Game.spawns.Spawn1, { withinRampartsOnly: true });
 	}

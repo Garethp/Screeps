@@ -30,6 +30,7 @@ module.exports =
 
 			if(this.canSpawn(spawn.type))
 			{
+				console.log(Game.spawns.Spawn1.spawning);
 				this.spawn(spawn.type, spawn.memory);
 				Memory.spawnQue.shift();
 			}
@@ -87,9 +88,9 @@ module.exports =
 		var parts = manager.getRoleBodyParts(role);
 
 		var total = 0;
-		for(var index in role)
+		for(var index in parts)
 		{
-			var part = role[index];
+			var part = parts[index];
 			switch(part)
 			{
 				case Game.MOVE:
