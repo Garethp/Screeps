@@ -126,9 +126,11 @@ module.exports =
 		return total;
 	},
 
-	killAll: function()
+	killAll: function(role)
 	{
-		for(var i in Game.creeps)
-			Game.creeps[i].suicide();
+		for(var i in Game.creeps) {
+			if(role == undefined || Game.creeps[i].memory.role == role)
+				Game.creeps[i].suicide();
+		}
 	}
 }

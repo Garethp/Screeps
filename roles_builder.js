@@ -8,7 +8,9 @@ var builder = function()
 builder.prototype = Object.create(proto.prototype);
 builder.parts = [
 	[Game.WORK,Game.WORK,Game.CARRY,Game.CARRY,Game.MOVE],
-	[Game.WORK,Game.WORK,Game.CARRY,Game.CARRY,Game.MOVE, Game.MOVE, Game.CARRY]
+	[Game.WORK,Game.WORK,Game.CARRY,Game.CARRY,Game.MOVE, Game.MOVE, Game.CARRY],
+	[Game.WORK,Game.WORK,Game.CARRY,Game.CARRY,Game.MOVE, Game.MOVE, Game.CARRY, Game.MOVE],
+	[Game.WORK,Game.WORK,Game.CARRY,Game.CARRY,Game.MOVE, Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY]
 ];
 builder.prototype.performAction = function(creep)
 {
@@ -38,7 +40,7 @@ builder.prototype.performAction = function(creep)
 
 		if(damagedRamparts.length)
 		{
-			creep.moveTo(damagedRamparts[0], { withinRampartsOnly: true });
+			creep.moveTo(damagedRamparts[0]);
 			creep.repair(damagedRamparts[0]);
 
 			return;

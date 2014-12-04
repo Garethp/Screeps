@@ -25,15 +25,26 @@ module.exports ={
 		if(Memory.requiredScreeps == undefined)
 		{
 			Memory.requiredScreeps = [
+				//Survival
+//				'miner',
+//				'archer',
+//				'archer',
+//				'healer',
+//				'archer',
+//				'healer',
+//				'builder',
+//				'archer',
+//				'archer'
+
+				//Tutorial
 				'miner',
-				'archer',
-				'archer',
-				'healer',
-				'archer',
-				'healer',
+				'miner',
+				'miner',
+				'miner',
+				'miner',
 				'builder',
-				'archer',
-				'archer'
+				'builder',
+				'builder'
 			];
 		}
 	},

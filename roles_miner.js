@@ -43,6 +43,9 @@ miner.prototype.onSpawn = function()
 	var steps = Game.spawns.Spawn1.pos.findPathTo(source).length * 2;
 	var creepsNeeded = Math.round((steps * 8) / 50);
 
+	if(creepsNeeded > 3)
+		creepsNeeded = 3;
+
 	for(var i = 0; i < creepsNeeded; i++)
 		Memory.spawnQue.unshift({ type: 'miner_helper', memory: {
 			miner: creep.id

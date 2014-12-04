@@ -65,11 +65,12 @@ helper.prototype.performAction = function()
 		}
 		else
 		{
-			creep.moveTo(miner);
+			creep.moveTo(miner, { ignoreCreeps: true });
 		}
 	}
 	else {
-		var target = creep.pos.findNearest(Game.MY_SPAWNS);
+		var target = creep.pos.findNearest(Game.MY_SPAWNS, { ignoreCreeps: true });
+
 		if(target !== null && target.energy / target.energyCapacity >= .75)
 		{
 			var extension = creep.pos.findNearest(Game.MY_STRUCTURES, {
@@ -82,7 +83,33 @@ helper.prototype.performAction = function()
 				target = extension;
 		}
 
+		if(target == null)
+		{
+			var target = creep.pos.findNearest(Game.MY_SPAWNS, { ignoreCreeps: true });
+		}
+
+		var targetDirection = creep.pos.findPathTo(target, { ignoreCreeps: true })[0].direction;
+
+		var courier = creep.pos.findNearest(Game.MY_CREEPS, {
+			filter: function(possibleTarget)
+			{
+				return (
+					possibleTarget.memory.role == creep.memory.role
+					&& possibleTarget.memory.miner == creep.memory.miner
+					&& possibleTarget.energy == 0
+					&& creep.pos.inRangeTo(possibleTarget, 2)
+					&& creep.pos.getDirectionTo(possibleTarget) == targetDirection
+				);
+			}
+		});
+
+		if(courier !== null) {
+			target = courier;
+		}
+
 		creep.moveTo(target);
+
+
 
 		if(creep.pos.isNearTo(target)) {
 			if(target.energy < target.energyCapacity)
