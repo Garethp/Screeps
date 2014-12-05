@@ -18,7 +18,7 @@ var guard = {
 			creep.attack(targets[0]);
 		}
 		else {
-			creep.moveTo(Game.spawns.Spawn1);
+			this.rest();
 		}
 	}
 };

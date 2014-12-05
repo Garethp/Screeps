@@ -18,6 +18,12 @@ var helper = {
 	{
 		var creep = this.creep;
 
+		if(creep.memory.courier !== undefined && creep.memory.courier == true)
+		{
+			creep.memory.courier = false;
+			return;
+		}
+
 		//If this helper isn't assigned to a miner, find one and assign him to it. If it is assigned to a miner,
 		//then find that miner by his id
 		if(creep.memory.miner == undefined)
@@ -124,6 +130,7 @@ var helper = {
 			//If we found a courier, make that courier our new target
 			if(courier !== null) {
 				target = courier;
+				target.memory.courier = true;
 			}
 
 			//If our target is full (Extensions and Spawns), then let's find a builder to put it in.

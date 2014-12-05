@@ -82,15 +82,15 @@ var proto = {
 	 * All credit goes to Djinni
 	 * @url https://bitbucket.org/Djinni/screeps/
 	 */
-	rest: function()
+	rest: function(civilian)
 	{
 		var creep = this.creep;
 
 		var distance = 4;
-		var restTarget = Game.spawns.Spawn1;
+		var restTarget = creep.pos.findNearest(Game.MY_SPAWNS);
 
 		var flag = Game.flags['Flag1'];
-		if(flag !== undefined)
+		if(flag !== undefined && civilian !== true)
 			restTarget = flag;
 
 		if (creep.getActiveBodyparts(Game.HEAL)) {

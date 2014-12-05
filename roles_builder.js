@@ -112,8 +112,7 @@ var builder = {
 				this.kite(target);
 			}
 
-			//If we have nothing to do, let's just go and regroup at the spawn point
-			creep.moveTo(Game.spawns.Spawn1, { withinRampartsOnly: true });
+			this.rest(true);
 		}
 	}
 }

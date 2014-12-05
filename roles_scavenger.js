@@ -26,8 +26,15 @@ var scavenger = {
 
 		if(droppedEnergy == null || creep.energy == creep.energyCapacity)
 		{
-			creep.moveTo(Game.spawns.Spawn1);
-			creep.transferEnergy(Game.spawns.Spawn1);
+			var nearestSpawn = creep.pos.findNearest(Game.MY_SPAWNS, {
+				filter: function(spawn)
+				{
+					return spawn.energy < spawn.energyCapacity;
+				}
+			});
+
+			creep.moveTo(nearestSpawn);
+			creep.transferEnergy(nearestSpawn);
 		}
 		else
 		{

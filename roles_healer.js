@@ -53,7 +53,7 @@ var healer = {
 			if(guard !== null)
 				creep.moveTo(guard);
 			else
-				creep.moveTo(Game.spawns.Spawn1);
+				this.rest();
 		}
 	}
 };
