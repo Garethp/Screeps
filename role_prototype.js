@@ -1,95 +1,91 @@
-var proto = function()
-{
+var proto = {
+	/**
+	 * The creep for this role
+	 *
+	 * @type creep
+	 */
+	creep: null,
 
-};
-
-proto.prototype.init = function(creep)
-{
-	this.creep = creep;
-};
-
-proto.prototype.run = function()
-{
-	if(this.creep.memory.onSpawned == undefined) {
-		this.onSpawn();
-		this.creep.memory.onSpawned = true;
-	}
-
-	this.performAction(this.creep);
-
-	if(this.creep.ticksToLive == 1)
-		this.beforeAge();
-};
-
-proto.prototype.handleEvents = function()
-{
-	if(this.creep.memory.onSpawned == undefined) {
-		this.onSpawnStart();
-		this.onSpawn();
-		this.creep.memory.onSpawned = true;
-	}
-
-	if(this.creep.memory.onSpawnEnd == undefined && !this.creep.spawning) {
-		this.onSpawnEnd();
-		this.creep.memory.onSpawnEnd = true;
-	}
-};
-
-proto.prototype.onSpawn = function()
-{
-};
-
-proto.prototype.getParts = function()
-{
-	var _ = require('lodash');
-
-	var extensions = Game.getRoom('1-1').find(Game.MY_STRUCTURES, {
-		filter: function(structure)
-		{
-			return (structure.structureType == Game.STRUCTURE_EXTENSION && structure.energy >= 200);
-		}
-	}).length;
-
-	var parts = _.cloneDeep(this.parts);
-	if(typeof parts[0] != "object")
-		return this.parts;
-
-	parts.reverse();
-
-	for(var i in parts)
+	/**
+	 * Set the creep for this role
+	 *
+	 * @param {Creep} creep
+	 */
+	setCreep: function(creep)
 	{
-		if((parts[i].length - 5) <= extensions) {
-			return parts[i];
+		this.creep = creep;
+		return this;
+	},
+
+	run: function()
+	{
+		if(this.creep.memory.onSpawned == undefined) {
+			this.onSpawn();
+			this.creep.memory.onSpawned = true;
 		}
-	}
-};
 
-proto.prototype.performAction = function()
-{
+		this.performAction(this.creep);
 
-};
+		if(this.creep.ticksToLive == 1)
+			this.beforeAge();
+	},
 
-proto.prototype.onSpawnStart = function()
-{
+	handleEvents: function()
+	{
+		if(this.creep.memory.onSpawned == undefined) {
+			this.onSpawnStart();
+			this.onSpawn();
+			this.creep.memory.onSpawned = true;
+		}
 
-};
+		if(this.creep.memory.onSpawnEnd == undefined && !this.creep.spawning) {
+			this.onSpawnEnd();
+			this.creep.memory.onSpawnEnd = true;
+		}
+	},
 
-proto.prototype.onSpawnEnd = function()
-{
+	getParts: function() {
+		var _ = require('lodash');
 
-};
+		var extensions = Game.getRoom('1-1').find(Game.MY_STRUCTURES, {
+			filter: function(structure)
+			{
+				return (structure.structureType == Game.STRUCTURE_EXTENSION && structure.energy >= 200);
+			}
+		}).length;
 
-proto.prototype.beforeAge = function()
-{
+		var parts = _.cloneDeep(this.parts);
+		if(typeof parts[0] != "object")
+			return this.parts;
 
-};
+		parts.reverse();
 
-/**
- * All credit goes to Djinni
- * @url https://bitbucket.org/Djinni/screeps/
- */
-proto.prototype.fightMethods = {
-	rest: function(creep) {
+		for(var i in parts)
+		{
+			if((parts[i].length - 5) <= extensions) {
+				return parts[i];
+			}
+		}
+	},
+
+	action: function() { },
+
+	onSpawn: function() { },
+
+	onSpawnStart: function() { },
+
+	onSpawnEnd: function() { },
+
+	beforeAge: function() { },
+
+	/**
+	 * All credit goes to Djinni
+	 * @url https://bitbucket.org/Djinni/screeps/
+	 */
+	rest: function()
+	{
+		var creep = this.creep;
+
 		var distance = 4;
 		var restTarget = Game.spawns.Spawn1;
 
@@ -108,7 +104,13 @@ proto.prototype.fightMethods = {
 		}
 	},
 
-	rangedAttack: function(creep) {
+	/**
+	 * All credit goes to Djinni
+	 * @url https://bitbucket.org/Djinni/screeps/
+	 */
+	rangedAttack: function() {
+		var creep = this.creep;
+
 		var target = creep.pos.findNearest(Game.HOSTILE_CREEPS)
 		if(target) {
 			if (target.pos.inRangeTo(creep.pos, 3) ) {
@@ -119,14 +121,22 @@ proto.prototype.fightMethods = {
 		return null;
 	},
 
-	keepAwayFromEnemies: function(creep)
+	keepAwayFromEnemies: function()
 	{
+		var creep = this.creep;
+
 		var target = creep.pos.findNearest(Game.HOSTILE_CREEPS);
 		if(target !== null && target.pos.inRangeTo(creep.pos, 3))
 			creep.moveTo(creep.pos.x + creep.pos.x - target.pos.x, creep.pos.y + creep.pos.y - target.pos.y );
 	},
 
-	kite: function(creep, target) {
+	/**
+	 * All credit goes to Djinni
+	 * @url https://bitbucket.org/Djinni/screeps/
+	 */
+	kite: function(target) {
+		var creep = this.creep;
+
 		if (target.pos.inRangeTo(creep.pos, 2)) {
 			creep.moveTo(creep.pos.x + creep.pos.x - target.pos.x, creep.pos.y + creep.pos.y - target.pos.y );
 			return true;
@@ -136,8 +146,14 @@ proto.prototype.fightMethods = {
 		return false;
 	},
 
-	targetEnemy: function(creep)
+	/**
+	 * All credit goes to Djinni
+	 * @url https://bitbucket.org/Djinni/screeps/
+	 */
+	targetEnemy: function()
 	{
+		var creep = this.creep;
+
 		var nearestArcher = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
 			filter: function(enemy)
 			{
