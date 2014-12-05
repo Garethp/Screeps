@@ -20,24 +20,42 @@ module.exports =
 	{
 		this.initSpawnQue();
 
-		if(Game.spawns.Spawn1.spawning == null && Memory.spawnQue.length > 0)
-		{
-			var spawn = Memory.spawnQue[0];
-			if(typeof spawn == "string")
-			{
-				spawn = { type: spawn, memory: { } };
-			}
+		if(Memory.spawnQue.length == 0)
+			return;
 
-			if(this.canSpawn(spawn.type))
+		var role = Memory.spawnQue[0];
+		var spawnCost = this.spawnCost(role);
+
+		if(typeof role == "string")
+		{
+			role = { type: role, memory: { } };
+		}
+
+		var toSpawnAt = Game.getRoom('1-1').find(Game.MY_SPAWNS, {
+			filter: function(spawn)
 			{
-				this.spawn(spawn.type, spawn.memory);
-				Memory.spawnQue.shift();
+				return spawn.energy > spawnCost
+					&& spawn.spawning == null;
 			}
+		});
+
+		if(toSpawnAt.length > 0)
+			toSpawnAt = toSpawnAt[0];
+		else
+			toSpawnAt = false;
+
+		if(toSpawnAt)
+		{
+			this.spawn(role.type, role.memory, toSpawnAt);
+			Memory.spawnQue.shift();
 		}
 	},
 
-	spawn: function(role, memory)
+	spawn: function(role, memory, spawnPoint)
 	{
+		if(!spawnPoint)
+			spawnPoint = Game.spawns.Spawn1;
+
 		var manager = require('roleManager');
 
 		if(!manager.roleExists(role))
@@ -45,7 +63,7 @@ module.exports =
 			return;
 		}
 
-		if(!this.canSpawn(Game.spawns.Spawn1, role))
+		if(!this.canSpawn(spawnPoint, role))
 		{
 			return;
 		}
@@ -65,7 +83,7 @@ module.exports =
 				name = tryName;
 		}
 
-		Game.spawns.Spawn1.createCreep(manager.getRoleBodyParts(role), name, memory);
+		spawnPoint.createCreep(manager.getRoleBodyParts(role), name, memory);
 	},
 
 	canSpawn: function(spawnPoint, role)

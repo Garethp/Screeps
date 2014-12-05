@@ -34,7 +34,8 @@ var miner = {
 		Memory.sources[source.id].miner = creep.id;
 		creep.memory.source = source.id;
 
-		var steps = Game.spawns.Spawn1.pos.findPathTo(source).length * 2;
+		var helperSpawn = source.pos.findNearest(Game.MY_SPAWNS);
+		var steps = helperSpawn.pos.findPathTo(source).length * 2;
 		var creepsNeeded = Math.round((steps * 8) / 100);
 
 		if(creepsNeeded > 5)

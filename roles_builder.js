@@ -41,8 +41,17 @@ var builder = {
 
 		//If out of energy, go to spawn and recharge
 		if(creep.energy == 0) {
-			creep.moveTo(Game.spawns.Spawn1);
-			Game.spawns.Spawn1.transferEnergy(creep);
+			var closestSpawn = creep.pos.findNearest(Game.MY_SPAWNS, {
+				filter: function(spawn)
+				{
+					return spawn.energy > 0;
+				}
+			});
+
+			if(closestSpawn) {
+				creep.moveTo(closestSpawn);
+				closestSpawn.transferEnergy(creep);
+			}
 		}
 		else {
 			//First, we're going to check for damaged ramparts. We're using ramparts as the first line of defense
@@ -54,7 +63,7 @@ var builder = {
 			for(var index in structures)
 			{
 				var structure = structures[index];
-				if(structure.structureType == 'rampart' && structure.hits < (structure.hitsMax - 20))
+				if(structure.structureType == 'rampart' && structure.hits < (structure.hitsMax - 50))
 					damagedRamparts.push(structure);
 			}
 
