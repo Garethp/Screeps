@@ -24,7 +24,7 @@ var proto = {
 			this.creep.memory.onSpawned = true;
 		}
 
-		this.performAction(this.creep);
+		this.action(this.creep);
 
 		if(this.creep.ticksToLive == 1)
 			this.beforeAge();

@@ -16,7 +16,10 @@ module.exports = {
 		if(!this.roleExists(role))
 			return false;
 
+        var proto = require('role_prototype');
+
 		var roleObject = require("roles_" + role);
+        roleObject = require('extend')(roleObject, proto);
 		return roleObject;
 	},
 

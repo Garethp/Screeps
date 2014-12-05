@@ -1,5 +1,6 @@
 module.exports = function(creeps)
 {
+	var roleManager = require('roleManager');
 	var roles = { };
 
 	//For each creep, check if they have a role. If they do, load and run it
@@ -11,11 +12,11 @@ module.exports = function(creeps)
 
 		var role = creep.memory.role;
 
-		if(roles[role] == undefined)
-			roles[role] = require("roles_" + role);
+		if(roleManager.roleExists(role))
+			role = roleManager.getRole(role);
 
-		var roles = new roles[role];
-		roles.init(creep);
-		roles.run();
+		var role = Object.create(role);
+		role.setCreep(creep);
+		role.run();
 	}
 };
