@@ -1,3 +1,7 @@
+/**
+ * @TODO: Make it more carry heavy, make it have helpers
+ * @type {{parts: *[], getParts: getParts, action: action}}
+ */
 var builder = {
 	parts: [
 		[Game.WORK,Game.WORK,Game.CARRY,Game.CARRY,Game.MOVE],
@@ -37,6 +41,8 @@ var builder = {
 
 	action: function()
 	{
+		return;
+
 		var creep = this.creep;
 
 		//If out of energy, go to spawn and recharge

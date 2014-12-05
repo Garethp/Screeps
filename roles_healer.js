@@ -20,41 +20,20 @@ var healer = {
 		//Find my creeps that are hurt. If they're hurt, heal them.
 		//If there aren't any hurt, we're going to try and get the healers
 		//to tick near the guards, so that they're close by when the battle starts
-		for(var name in Game.creeps)
-		{
-			var targetCreep = Game.creeps[name];
-			if(!targetCreep.my)
-				continue;
+		var target = creep.pos.findNearest(Game.MY_CREEPS, {
+			filter: function(t)
+			{
+				return t.hits < t.hitsMax
+			}
+		});
 
-			if(targetCreep.hits < targetCreep.hitsMax)
-				needsHealing.push(targetCreep);
-		}
-
-		if(needsHealing.length)
+		if(target)
 		{
-			creep.moveTo(needsHealing[0]);
-			creep.heal(needsHealing[0]);
+			creep.moveTo(target);
+			creep.heal(target);
 		}
 		else
-		{
-			this.rest();
-
-			var guard = null;
-			for(var name in Game.creeps)
-			{
-				var creep = Game.creeps[name];
-				if(creep.my && creep.memory.role == 'guard')
-				{
-					guard = creep;
-					break;
-				}
-			}
-
-			if(guard !== null)
-				creep.moveTo(guard);
-			else
-				this.rest();
-		}
+			creep.rest();
 	}
 };
 

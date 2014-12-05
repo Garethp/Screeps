@@ -85,8 +85,15 @@ module.exports ={
 		for(var i in Game.spawns)
 		{
 			var spawn = Game.spawns[i];
-			if(!spawn.spawning && Memory.spawnQue.length == 0 && spawn.energy / spawn.energyCapacity >= .75)
-				require('spawner').spawn('archer', { }, spawn);
+			if(!spawn.spawning && Memory.spawnQue.length == 0 && spawn.energy / spawn.energyCapacity >= .6) {
+				var archers = countType('archer', true);
+				var healers = countType('healer', true);
+
+				if(healers / archers < .25)
+					require('spawner').spawn('healer', { }, spawn);
+				else
+					require('spawner').spawn('archer', { }, spawn);
+			}
 		}
 	}
 };

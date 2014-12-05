@@ -89,7 +89,7 @@ var helper = {
 			var emptyExtension = creep.pos.findNearest(Game.MY_STRUCTURES, {
 				filter: function (structure) {
 					return (structure.structureType == Game.STRUCTURE_EXTENSION
-						&& structure.energy < 200);
+						&& structure.energy < 400);
 				},
 				ignoreCreeps: true
 			});
