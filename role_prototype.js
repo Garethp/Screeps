@@ -91,14 +91,20 @@ proto.prototype.beforeAge = function()
 proto.prototype.fightMethods = {
 	rest: function(creep) {
 		var distance = 4;
+		var restTarget = Game.spawns.Spawn1;
+
+		var flag = Game.flags['Flag1'];
+		if(flag !== undefined)
+			restTarget = flag;
+
 		if (creep.getActiveBodyparts(Game.HEAL)) {
-			distance = distance - 2
+//			distance = distance - 1;
 		}
 		else if (creep.getActiveBodyparts(Game.RANGED_ATTACK)) {
-			distance = distance - 1;
+//			distance = distance - 1;
 		}
-		if (creep.pos.findPathTo(Game.spawns.Spawn1).length > distance) {
-			creep.moveTo(Game.spawns.Spawn1);
+		if (creep.pos.findPathTo(restTarget).length > distance) {
+			creep.moveTo(restTarget);
 		}
 	},
 

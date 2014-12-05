@@ -15,9 +15,7 @@ var helper = function()
 
 helper.prototype = Object.create(proto.prototype);
 helper.parts = [
-	[Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY],
-	[Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY],
-	[Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY]
+	[Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY]
 ];
 helper.prototype.performAction = function()
 {
@@ -66,14 +64,18 @@ helper.prototype.performAction = function()
 		}
 		else
 		{
-			creep.moveTo(miner, { ignoreCreeps: true });
+			creep.moveTo(miner);
 		}
 	}
+	//Time to go deposit some energy somewhere
 	else {
+		//Get the nearest Spawn
 		var target = creep.pos.findNearest(Game.MY_SPAWNS, { ignoreCreeps: true });
 
-		if(target !== null && target.energy / target.energyCapacity >= .75)
+		//If the spawn has >50% energy, let's look for an extension
+		if(target !== null && target.energy / target.energyCapacity >= .5)
 		{
+			//Look for the nearest extension that can take energy
 			var extension = creep.pos.findNearest(Game.MY_STRUCTURES, {
 				filter: function(structure)
 				{
@@ -81,16 +83,29 @@ helper.prototype.performAction = function()
 				},
 				ignoreCreeps: true
 			});
+
+			//If we found it, set it as our target
 			if(extension != undefined)
 				target = extension;
 		}
 
-		if(target == null)
-		{
-			var target = creep.pos.findNearest(Game.MY_SPAWNS, { ignoreCreeps: true });
-		}
-
+		//Let's get the direction we want to go in
 		var targetDirection = creep.pos.findPathTo(target, { ignoreCreeps: true })[0].direction;
+
+		//Let's look for a courier in that direction. We'll check on making sure they're the right
+		//role, if they can hold any energy, if they're in range and if they're in the same direction
+		var leftDir = targetDirection - 1;
+		var rightDir = targetDirection + 1;
+
+		if(leftDir < 1)
+			leftDir += 8;
+		if(leftDir > 8)
+			leftDir -= 8;
+
+		if(rightDir < 1)
+			rightDir += 8;
+		if(rightDir > 8)
+			rightDir -= 8;
 
 		var courier = creep.pos.findNearest(Game.MY_CREEPS, {
 			filter: function(possibleTarget)
@@ -100,15 +115,22 @@ helper.prototype.performAction = function()
 //					&& possibleTarget.memory.miner == creep.memory.miner
 					&& possibleTarget.energy < possibleTarget.energyCapacity
 					&& creep.pos.inRangeTo(possibleTarget, 1)
-					&& creep.pos.getDirectionTo(possibleTarget) == targetDirection
+					&& (
+						creep.pos.getDirectionTo(possibleTarget) == targetDirection
+						|| creep.pos.getDirectionTo(possibleTarget) == leftDir
+						|| creep.pos.getDirectionTo(possibleTarget) == rightDir
+						)
 				);
 			}
 		});
 
+		//If we found a courier, make that courier our new target
 		if(courier !== null) {
 			target = courier;
 		}
 
+		//If our target is full (Extensions and Spawns), then let's find a builder to put it in.
+		//If there is such a builder, let's make him our new target
 		if(target.energy == target.energyCapacity)
 		{
 			var builder = creep.pos.findNearest(Game.MY_CREEPS, {
@@ -123,16 +145,19 @@ helper.prototype.performAction = function()
 				target = builder;
 		}
 
+		//Now we're going to get the direction we need to go in to reach our target
 		var targetDirection = creep.pos.findPathTo(target, { ignoreCreeps: true })[0].direction;
 
-		creep.move(targetDirection);
-
+		//If we're near to the target, either give it our energy or drop it
 		if(creep.pos.isNearTo(target)) {
 			if(target.energy < target.energyCapacity)
 				creep.transferEnergy(target);
 			else
 				creep.dropEnergy();
 		}
+		//Let's do the moving
+		else
+			creep.moveTo(target);
 	}
 };
 

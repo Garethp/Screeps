@@ -10,7 +10,10 @@ var healer = function()
 };
 
 healer.prototype = Object.create(proto.prototype);
-healer.parts = [Game.MOVE, Game.MOVE, Game.HEAL, Game.HEAL];
+healer.parts = [
+	[Game.MOVE, Game.MOVE, Game.HEAL, Game.HEAL],
+	[Game.MOVE, Game.MOVE, Game.MOVE, Game.HEAL, Game.HEAL, Game.HEAL]
+];
 healer.prototype.performAction = function(creep)
 {
 	var needsHealing = [ ];

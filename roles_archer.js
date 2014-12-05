@@ -5,7 +5,13 @@ var archer = function()
 
 };
 
-archer.parts = [Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.MOVE, Game.MOVE];
+archer.parts = [
+	[Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.MOVE, Game.MOVE],
+	[Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.MOVE, Game.MOVE, Game.MOVE],
+	[Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.MOVE, Game.MOVE, Game.MOVE, Game.MOVE],
+	[Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.RANGED_ATTACK, Game.MOVE, Game.MOVE, Game.MOVE, Game.MOVE, Game.MOVE],
+];
+
 archer.prototype = Object.create(proto.prototype);
 archer.prototype.performAction = function()
 {

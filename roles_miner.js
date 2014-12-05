@@ -12,8 +12,7 @@ var miner = function()
 miner.prototype = Object.create(proto.prototype);
 miner.parts = [
 	[Game.MOVE, Game.WORK, Game.WORK, Game.WORK, Game.WORK],
-	[Game.MOVE, Game.WORK, Game.WORK, Game.WORK, Game.WORK, Game.WORK],
-	[Game.MOVE, Game.WORK, Game.WORK, Game.WORK, Game.WORK, Game.WORK, Game.MOVE, Game.MOVE, Game.WORK, Game.WORK, Game.MOVE]
+	[Game.MOVE, Game.WORK, Game.WORK, Game.WORK, Game.WORK, Game.WORK]
 ];
 miner.prototype.onSpawn = function()
 {
@@ -44,8 +43,8 @@ miner.prototype.onSpawn = function()
 	var steps = Game.spawns.Spawn1.pos.findPathTo(source).length * 2;
 	var creepsNeeded = Math.round((steps * 8) / 100);
 
-	if(creepsNeeded > 3)
-		creepsNeeded = 3;
+	if(creepsNeeded > 5)
+		creepsNeeded = 5;
 
 	for(var i = 0; i < creepsNeeded; i++)
 		Memory.spawnQue.unshift({ type: 'miner_helper', memory: {
