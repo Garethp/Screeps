@@ -108,10 +108,12 @@ var proto = {
 	 * All credit goes to Djinni
 	 * @url https://bitbucket.org/Djinni/screeps/
 	 */
-	rangedAttack: function() {
+	rangedAttack: function(target) {
 		var creep = this.creep;
 
-		var target = creep.pos.findNearest(Game.HOSTILE_CREEPS)
+		if(!target)
+			target = creep.pos.findNearest(Game.HOSTILE_CREEPS);
+
 		if(target) {
 			if (target.pos.inRangeTo(creep.pos, 3) ) {
 				creep.rangedAttack(target);
@@ -143,48 +145,52 @@ var proto = {
 		} else if (target.pos.inRangeTo(creep.pos, 3)) {
 			return true;
 		}
+		else {
+			creep.moveTo(target);
+			return true;
+		}
+
 		return false;
 	},
 
-	/**
-	 * All credit goes to Djinni
-	 * @url https://bitbucket.org/Djinni/screeps/
-	 */
-	targetEnemy: function()
+	getRangedTarget: function()
 	{
 		var creep = this.creep;
 
-		var nearestArcher = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
+		var closeArchers = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
 			filter: function(enemy)
 			{
-				return enemy.getActiveBodyparts(Game.RANGED_ATTACK) > 0;
+				return enemy.getActiveBodyparts(Game.RANGED_ATTACK) > 0
+					&& creep.pos.inRangeTo(enemy, 3);
 			}
 		});
 
-		if(nearestArcher != null)
-			return nearestArcher;
+		if(closeArchers != null)
+			return closeArchers;
 
-		var nearestMobileMelee = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
+		var closeMobileMelee = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
 			filter: function(enemy)
 			{
 				return enemy.getActiveBodyparts(Game.ATTACK) > 0
-					&& enemy.getActiveBodyparts(Game.MOVE) > 0;
+					&& enemy.getActiveBodyparts(Game.MOVE) > 0
+					&& creep.pos.inRangeTo(enemy, 3);
 			}
 		});
 
-		if(nearestMobileMelee != null)
-			return nearestMobileMelee;
+		if(closeMobileMelee != null)
+			return closeMobileMelee;
 
-		var nearestHealer = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
+		var closeHealer = creep.pos.findNearest(Game.HOSTILE_CREEPS, {
 			filter: function(enemy)
 			{
 				return enemy.getActiveBodyparts(Game.HEAL) > 0
-					&& enemy.getActiveBodyparts(Game.MOVE) > 0;
+					&& enemy.getActiveBodyparts(Game.MOVE) > 0
+					&& creep.pos.inRangeTo(enemy, 3);
 			}
 		});
 
-		if(nearestHealer != null)
-			return nearestHealer;
+		if(closeHealer != null)
+			return closeHealer;
 
 		return creep.pos.findNearest(Game.HOSTILE_CREEPS);
 	}

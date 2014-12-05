@@ -75,7 +75,7 @@ var helper = {
 			var target = creep.pos.findNearest(Game.MY_SPAWNS, { ignoreCreeps: true });
 
 			//If the spawn has >50% energy, let's look for an extension
-			if(target !== null && target.energy / target.energyCapacity >= .5)
+			if(target !== null && target.energy / target.energyCapacity >= .25)
 			{
 				//Look for the nearest extension that can take energy
 				var extension = creep.pos.findNearest(Game.MY_STRUCTURES, {

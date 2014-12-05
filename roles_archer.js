@@ -40,24 +40,24 @@ var archer = {
 		return parts;
 	},
 
+	/**
+	 * @TODO: We need to get archers to prioritise their targets better
+	 */
 	action: function()
 	{
 		var creep = this.creep;
 
-		var target = this.rangedAttack();
+		var target = this.getRangedTarget();
+		if(target !== null)
+
+			creep.rangedAttack(target);
 
 		//If there's not a target near by, let's go search for a target if need be
 		if(target === null)
-		{
-			target = creep.pos.findNearest(Game.HOSTILE_CREEPS);
-			if (target)
-			{
-				creep.moveTo(target);
-				return;
-			}
-		} else if (this.kite(target)) return;
+			return this.rest();
 
-		this.rest();
+		this.kite(target);
+		creep.rangedAttack(target);
 	}
 };
 

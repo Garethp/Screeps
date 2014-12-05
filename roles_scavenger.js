@@ -13,12 +13,9 @@ var scavenger = {
 				var tile = creep.room.lookAt(en);
 				for(var i in tile)
 				{
-					if(tile[i].type == "creep" && tile[i].creep.memory.role == "miner")
+					if(tile[i].type == "creep" && tile[i].creep.memory && tile[i].creep.memory.role == "miner")
 						pickup = false;
 				}
-
-				if(pickup)
-					console.log(tile);
 
 				return pickup;
 			}

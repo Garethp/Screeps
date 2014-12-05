@@ -35,8 +35,7 @@ module.exports =
 		var toSpawnAt = Game.getRoom('1-1').find(Game.MY_SPAWNS, {
 			filter: function(spawn)
 			{
-				return me.canSpawn(spawn, role.type)
-					&& spawn.spawning == null;
+				return me.canSpawn(spawn, role.type);
 			}
 		});
 
@@ -92,7 +91,7 @@ module.exports =
 		}
 
 		console.log('Spawning ' + role);
-		console.log(spawnPoint.createCreep(manager.getRoleBodyParts(role), name, memory));
+		spawnPoint.createCreep(manager.getRoleBodyParts(role), name, memory);
 	},
 
 	canSpawn: function(spawnPoint, role)
@@ -103,7 +102,9 @@ module.exports =
 			spawnPoint = Game.spawns.Spawn1;
 		}
 
-		return spawnPoint.energy >= this.spawnCost(role);
+		return spawnPoint.energy >= this.spawnCost(role)
+			&& (spawnPoint.spawning == null
+				|| spawnPoint.spawning == undefined);
 	},
 
 	spawnCost: function(role)

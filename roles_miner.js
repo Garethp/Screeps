@@ -1,5 +1,7 @@
 /**
  * This guy just finds a source, and stays near it. His job is just to mine away and let the energy fall on the ground
+ *
+ * @TODO: See if we can't implement preffered spawn spots close to their source
  * @param creep
  */
 var miner = {
