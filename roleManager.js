@@ -26,6 +26,10 @@ module.exports = {
 			return false;
 
 		var role = this.getRole(role);
-		return role.prototype.getParts.call(role);
+
+		if(role.getParts !== undefined)
+			return role.getParts.call(role);
+		else
+			return role.prototype.getParts.call(role);
 	}
 };

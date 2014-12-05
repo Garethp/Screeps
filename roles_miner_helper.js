@@ -17,6 +17,10 @@ helper.prototype = Object.create(proto.prototype);
 helper.parts = [
 	[Game.MOVE, Game.CARRY, Game.MOVE, Game.CARRY]
 ];
+/**
+ * @TODO: Sometimes in their eagerness to get to their miner, they'll block the miners path to the source. Fix this. (EG: Map 1, Bottom Left Source)
+ * @TODO: Sometimes when passing energy to the courier, the courier doesn't know they got energy, so they'll continue on to the miner. This is ridiculous
+ */
 helper.prototype.performAction = function()
 {
 	var creep = this.creep;
@@ -150,14 +154,16 @@ helper.prototype.performAction = function()
 
 		//If we're near to the target, either give it our energy or drop it
 		if(creep.pos.isNearTo(target)) {
-			if(target.energy < target.energyCapacity)
+			if(target.energy < target.energyCapacity) {
 				creep.transferEnergy(target);
+			}
 			else
 				creep.dropEnergy();
 		}
 		//Let's do the moving
-		else
+		else {
 			creep.moveTo(target);
+		}
 	}
 };
 
