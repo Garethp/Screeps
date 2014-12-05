@@ -17,6 +17,6 @@ module.exports = function(creeps)
 
 		var role = Object.create(role);
 		role.setCreep(creep);
-		role.run();
+		try { role.run(); } catch(e) { };
 	}
 };

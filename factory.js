@@ -78,5 +78,15 @@ module.exports ={
 
 			gatheredScreeps[type]++;
 		}
+	},
+
+	buildArmyWhileIdle: function()
+	{
+		for(var i in Game.spawns)
+		{
+			var spawn = Game.spawns[i];
+			if(!spawn.spawning && Memory.spawnQue.length == 0 && spawn.energy / spawn.energyCapacity >= .75)
+				require('spawner').spawn('archer', { }, spawn);
+		}
 	}
 };

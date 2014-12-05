@@ -180,7 +180,7 @@ var helper = {
 		});
 
 		//If we found a courier, make that courier our new target
-		if (courier !== null) {
+		if (courier !== null && !creep.pos.isNearTo(target)) {
 			target = courier;
 			target.memory.courier = true;
 		}

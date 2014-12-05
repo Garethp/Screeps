@@ -99,10 +99,14 @@ var builder = {
 
 			//If no repairs are needed, we're just going to go find some structures to build
 			var targets = creep.pos.findNearest(Game.CONSTRUCTION_SITES);
-			if(targets !== undefined) {
+			if(targets) {
 
 				if(!creep.pos.isNearTo(targets))
 					creep.moveTo(targets);
+
+				if(creep.pos.inRangeTo(targets, 0))
+					creep.suicide();
+
 				creep.build(targets);
 				return;
 			}

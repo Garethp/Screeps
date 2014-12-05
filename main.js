@@ -8,4 +8,6 @@ factory.run();
 
 spawner.spawnNextInQue();
 
+factory.buildArmyWhileIdle();
+
 performRoles(Game.creeps);
