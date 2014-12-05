@@ -10,7 +10,7 @@ var miner = {
 		[Game.MOVE, Game.WORK, Game.WORK, Game.WORK, Game.WORK, Game.WORK]
 	],
 
-	onSpawn: function()
+	getOpenSource: function()
 	{
 		var creep = this.creep;
 
@@ -27,7 +27,14 @@ var miner = {
 			}
 		});
 
-		if(source == undefined)
+		return source;
+	},
+
+	setSourceToMine: function(source)
+	{
+		var creep = this.creep;
+
+		if(!source)
 			return;
 
 		if(Memory.sources[source.id] == undefined)
@@ -49,6 +56,18 @@ var miner = {
 			}});
 
 		creep.memory.helpersNeeded = creepsNeeded;
+	},
+
+	onSpawn: function()
+	{
+		var creep = this.creep;
+
+		creep.memory.isNearSource = false;
+		creep.memory.helpers = [];
+
+		var source = this.getOpenSource();
+		this.setSourceToMine(source);
+
 		creep.memory.onCreated = true;
 	},
 
@@ -61,8 +80,19 @@ var miner = {
 		//For this, we assign one miner to one source, and they stay with it
 		var source = Game.getObjectById(creep.memory.source);
 
-		if(source == null)
-			return;
+		if(source == null) {
+			var source = this.getOpenSource();
+
+			if(!source)
+				return;
+
+			this.setSourceToMine(source);
+		}
+
+		if(creep.pos.inRangeTo(source, 5))
+			creep.memory.isNearSource = true;
+		else
+			creep.memory.isNearSource = false;
 
 		if(Memory.sources[source.id] == undefined)
 			Memory.sources[source.id] = { id: source.id };

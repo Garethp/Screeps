@@ -101,7 +101,8 @@ var builder = {
 			var targets = creep.pos.findNearest(Game.CONSTRUCTION_SITES);
 			if(targets !== undefined) {
 
-				creep.moveTo(targets);
+				if(!creep.pos.isNearTo(targets))
+					creep.moveTo(targets);
 				creep.build(targets);
 				return;
 			}
