@@ -24,8 +24,8 @@ var builder = {
 		partsAllowed -= modulo;
 		partsAllowed /= 2;
 
-		if(partsAllowed > 3)
-			partsAllowed = 3;
+		if(partsAllowed > 5)
+			partsAllowed = 5;
 
 		for(var i = 0; i < partsAllowed; i++)
 			parts.push(Game.MOVE, Game.CARRY);

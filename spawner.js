@@ -25,6 +25,7 @@ module.exports =
 
 		var role = Memory.spawnQue[0];
 		var spawnCost = this.spawnCost(role);
+		var me = this;
 
 		if(typeof role == "string")
 		{
@@ -34,7 +35,7 @@ module.exports =
 		var toSpawnAt = Game.getRoom('1-1').find(Game.MY_SPAWNS, {
 			filter: function(spawn)
 			{
-				return spawn.energy > spawnCost
+				return me.canSpawn(spawn, role.type)
 					&& spawn.spawning == null;
 			}
 		});
@@ -44,9 +45,16 @@ module.exports =
 		else
 			toSpawnAt = false;
 
+//		console.log(toSpawnAt);
+
 		if(toSpawnAt)
 		{
+			if(!this.canSpawn(toSpawnAt, role.type))
+				return;
+
 			this.spawn(role.type, role.memory, toSpawnAt);
+
+			console.log('Removing ' + role.type);
 			Memory.spawnQue.shift();
 		}
 	},
@@ -83,7 +91,8 @@ module.exports =
 				name = tryName;
 		}
 
-		spawnPoint.createCreep(manager.getRoleBodyParts(role), name, memory);
+		console.log('Spawning ' + role);
+		console.log(spawnPoint.createCreep(manager.getRoleBodyParts(role), name, memory));
 	},
 
 	canSpawn: function(spawnPoint, role)

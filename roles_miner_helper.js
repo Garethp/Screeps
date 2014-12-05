@@ -12,7 +12,6 @@ var helper = {
 
 	/**
 	 * @TODO: Sometimes in their eagerness to get to their miner, they'll block the miners path to the source. Fix this. (EG: Map 1, Bottom Left Source)
-	 * @TODO: Sometimes when passing energy to the courier, the courier doesn't know they got energy, so they'll continue on to the miner. This is ridiculous
 	 */
 	action: function()
 	{

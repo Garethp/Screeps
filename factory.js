@@ -26,33 +26,33 @@ module.exports ={
 		{
 			Memory.requiredScreeps = [
 				//Survival
-//				'miner',
-//				'archer',
-//				'archer',
-//				'healer',
-//				'miner',
-//				'archer',
-//				'archer',
-//				'miner',
-//				'healer',
-//				'archer',
-//				'archer',
-//				'archer',
-//				'archer',
-//				'archer',
-//				'healer',
-//				'miner',
-//				'miner',
-//				'archer',
-//				'archer',
-//				'healer'
+				'miner', //1
+				'archer', //1
+				'miner', //2
+				'archer', //2
+				'healer', //1
+				'archer', //3
+				'miner', //3
+				'archer', //4
+				'healer', //2
+				'archer', //5
+				'archer', //6
+				'miner', //4
+				'archer', //7
+				'archer', //8
+				'archer', //9
+				'healer', //3
+				'miner', //5
+				'archer', //10
+				'archer', //11
+				'healer' //4
 
 				//Tutorial
-				'miner',
-				'miner',
-				'miner',
-				'miner',
-				'miner',
+//				'miner',
+//				'miner',
+//				'miner',
+//				'miner',
+//				'miner',
 			];
 		}
 	},
