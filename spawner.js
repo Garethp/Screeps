@@ -20,42 +20,40 @@ module.exports =
 	{
 		this.initSpawnQue();
 
-		if(Memory.spawnQue.length == 0)
+		if(!Memory.spawnQue.length) 
+			return;
+
+		var spawns = Game.getRoom('1-1').find(Game.MY_SPAWNS, {
+			filter: function(spawn)
+			{
+				return spawn.spawning === undefined || spawn.spawning === null;
+			}
+		});
+
+		if(!spawns.length) 
 			return;
 
 		var role = Memory.spawnQue[0];
-		var spawnCost = this.spawnCost(role);
-		var me = this;
 
 		if(typeof role == "string")
 		{
 			role = { type: role, memory: { } };
 		}
 
-		var toSpawnAt = Game.getRoom('1-1').find(Game.MY_SPAWNS, {
-			filter: function(spawn)
-			{
-				return me.canSpawn(spawn, role.type);
-			}
+		var me = this;
+		var toSpawnAt = spawns.filter(function(spawn)
+		{
+			return me.canSpawn(spawn, role.type);
 		});
 
-		if(toSpawnAt.length > 0)
-			toSpawnAt = toSpawnAt[0];
-		else
-			toSpawnAt = false;
+		if(! toSpawnAt.length) 
+			return;
 
-//		console.log(toSpawnAt);
+		toSpawnAt = toSpawnAt[0];
 
-		if(toSpawnAt)
-		{
-			if(!this.canSpawn(toSpawnAt, role.type))
-				return;
+		this.spawn(role.type, role.memory, toSpawnAt);
 
-			this.spawn(role.type, role.memory, toSpawnAt);
-
-			console.log('Removing ' + role.type);
-			Memory.spawnQue.shift();
-		}
+		Memory.spawnQue.shift();
 	},
 
 	spawn: function(role, memory, spawnPoint)
