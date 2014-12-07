@@ -7,7 +7,7 @@ module.exports = function(creeps)
 	for(var name in creeps)
 	{
 		var creep = creeps[name];
-		if(creep.memory.role == undefined || (creep.memory.active !== undefined && !creep.memory.active))
+		if(creep.spawning || creep.memory.role == undefined || (creep.memory.active !== undefined && !creep.memory.active))
 			continue;
 
 		var role = creep.memory.role;
