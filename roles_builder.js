@@ -12,37 +12,35 @@ var builder = {
 //		[Game.WORK,Game.WORK,Game.CARRY,Game.CARRY,Game.MOVE, Game.MOVE, Game.CARRY, Game.MOVE, Game.WORK, Game.MOVE, Game.CARRY]
 	],
 
-	getParts: function()
-	{
-		var _= require('lodash');
-
-		var partsAllowed = Game.getRoom('1-1').find(Game.MY_STRUCTURES, {
-			filter: function(structure)
-			{
-				return (structure.structureType == Game.STRUCTURE_EXTENSION && structure.energy >= 200);
-			}
-		}).length;
-
-		var parts = [ Game.WORK, Game.WORK, Game.WORK, Game.CARRY, Game.MOVE ];
-		var modulo = partsAllowed % 2;
-		partsAllowed -= modulo;
-		partsAllowed /= 2;
-
-		if(partsAllowed > 5)
-			partsAllowed = 5;
-
-		for(var i = 0; i < partsAllowed; i++)
-			parts.push(Game.MOVE, Game.CARRY);
-
-		return parts;
-
-		return this.prototype.getParts.call(this);
-	},
+//	getParts: function()
+//	{
+//		var _= require('lodash');
+//
+//		var partsAllowed = Game.getRoom('1-1').find(Game.MY_STRUCTURES, {
+//			filter: function(structure)
+//			{
+//				return (structure.structureType == Game.STRUCTURE_EXTENSION && structure.energy >= 200);
+//			}
+//		}).length;
+//
+//		var parts = [ Game.WORK, Game.WORK, Game.WORK, Game.CARRY, Game.MOVE ];
+//		var modulo = partsAllowed % 2;
+//		partsAllowed -= modulo;
+//		partsAllowed /= 2;
+//
+//		if(partsAllowed > 5)
+//			partsAllowed = 5;
+//
+//		for(var i = 0; i < partsAllowed; i++)
+//			parts.push(Game.MOVE, Game.CARRY);
+//
+//		return parts;
+//
+//		return this.prototype.getParts.call(this);
+//	},
 
 	action: function()
 	{
-		return;
-
 		var creep = this.creep;
 
 		//If out of energy, go to spawn and recharge
@@ -50,7 +48,7 @@ var builder = {
 			var closestSpawn = creep.pos.findNearest(Game.MY_SPAWNS, {
 				filter: function(spawn)
 				{
-					return spawn.energy > 0;
+					return spawn.energy > 0 && creep.pos.inRangeTo(spawn, 3);
 				}
 			});
 

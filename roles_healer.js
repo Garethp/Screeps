@@ -32,8 +32,9 @@ var healer = {
 			creep.moveTo(target);
 			creep.heal(target);
 		}
-		else
-			creep.rest();
+		else {
+			this.rest();
+		}
 	}
 };
 

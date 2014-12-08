@@ -89,9 +89,24 @@ var proto = {
 		var distance = 4;
 		var restTarget = creep.pos.findNearest(Game.MY_SPAWNS);
 
-		var flag = Game.flags['Flag1'];
-		if(flag !== undefined && civilian !== true)
-			restTarget = flag;
+		if(!civilian) {
+			var flags = Game.flags;
+			for (var i in flags) {
+				var flag = flags[i];
+				if (creep.pos.inRangeTo(flag, distance) || creep.pos.findPathTo(flag).length > 0) {
+					restTarget = flag;
+					break;
+				}
+			}
+		}
+
+//		var flag = Game.flags['Flag1'];
+//		if(flag !== undefined && civilian !== true)
+//			restTarget = flag;
+//
+//		var flag2 = Game.flags['Flag2'];
+//		if(flag !== undefined && civilian !== true && !creep.pos.inRangeTo(flag, distance) && !creep.pos.findPathTo(flag).length)
+//			restTarget = flag2;
 
 		if (creep.getActiveBodyparts(Game.HEAL)) {
 //			distance = distance - 1;
